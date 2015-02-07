@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../Eclipse/FastMath/FastMath.iml" filepath="$PROJECT_DIR$/../../Eclipse/FastMath/FastMath.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../FastMath/FastMath.iml" filepath="$PROJECT_DIR$/../FastMath/FastMath.iml" />
+      <module fileurl="file://F:/Eclipse/FastMath/FastMath.iml" filepath="F:/Eclipse/FastMath/FastMath.iml" />
       <module fileurl="file://$PROJECT_DIR$/RattleSnake.iml" filepath="$PROJECT_DIR$/RattleSnake.iml" />
     </modules>
   </component>
