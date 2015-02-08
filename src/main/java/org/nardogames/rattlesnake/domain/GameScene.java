@@ -11,6 +11,7 @@ import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.common.util.Vertex2f;
 import org.nardogames.rattlesnake.common.util.VertexUtils;
 import org.nardogames.rattlesnake.domain.enemies.FireEnemy;
+import org.nardogames.rattlesnake.domain.enemies.FireWhip;
 import org.nardogames.rattlesnake.domain.food.EnergyCloudProvider;
 import org.nardogames.rattlesnake.domain.food.IProvideFood;
 import org.newdawn.slick.opengl.Texture;
@@ -117,8 +118,14 @@ public class GameScene implements IScene {
     }
 
     private void spawnEnemyIfPossible() {
-        if(randomizer.nextFloat() > 0.98f) {
-            currentEnemies.add(FireEnemy.createNewEnemy());
+        float rnd = randomizer.nextFloat();
+        if(rnd > 0.98f) {
+            if(rnd > 0.995f) {
+                currentEnemies.add(FireWhip.createNewEnemy());
+            }
+            else {
+                currentEnemies.add(FireEnemy.createNewEnemy());
+            }
         }
     }
 

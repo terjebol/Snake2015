@@ -33,7 +33,7 @@ public class FireEnemy extends Enemy {
     private static Vector2f createRandomizedVector() {
         return new Vector2f(
                 2f * (-0.5f + randomizer.nextFloat()),
-                2f * (-0.5f + randomizer.nextFloat())).normalise().scale(0.5f);
+                2f * (-0.5f + randomizer.nextFloat())).normalise().scale(0.25f);
     }
 
     private static Vector2f createRandomizedPosition(Vector2f velocity) {
@@ -122,20 +122,27 @@ public class FireEnemy extends Enemy {
         public float getInitialVelocityY() {
             return position.getVelocity().negate().scale(0.25f).getY();
         }
-    }
 
-    private static class FireParticleUpdater extends DefaultParticleUpdater {
-
-        public FireParticleUpdater(IEasingMethod easingMethod) {
-            super(easingMethod);
+        @Override
+        public float getInitialParticleWidth() {
+            return 32f;
         }
 
         @Override
-        public float[] getColor(float factorOfTtl) {
-            float factor = getEasingMethod().execute(factorOfTtl, 0f, 1f, 1f);
-            return new float[] {
-                    1f, Math.max(0.5f - factor, 0f), 0f //0.5f - (0.5f * factor)
-            };
+        public float getInitialParticleHeight() {
+            return 32f;
+        }
+
+        @Override
+        public int getMinimumTimeToLive() {
+            return 1500;
+        }
+
+        @Override
+        public int getMaximumTimeToLive() {
+            return 2000;
         }
     }
+
+
 }
