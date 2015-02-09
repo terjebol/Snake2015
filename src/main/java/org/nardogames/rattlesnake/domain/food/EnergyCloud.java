@@ -2,7 +2,6 @@ package org.nardogames.rattlesnake.domain.food;
 
 import org.nardogames.rattlesnake.common.particles.ParticleEmitterPosition;
 import org.nardogames.rattlesnake.common.util.Collision;
-import org.nardogames.rattlesnake.domain.IAmFood;
 import org.nardogames.rattlesnake.domain.Snake;
 
 public class EnergyCloud extends ParticleEmitterPosition implements IAmFood {

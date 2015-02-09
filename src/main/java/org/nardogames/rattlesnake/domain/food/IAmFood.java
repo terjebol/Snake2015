@@ -1,4 +1,6 @@
-package org.nardogames.rattlesnake.domain;
+package org.nardogames.rattlesnake.domain.food;
+
+import org.nardogames.rattlesnake.domain.Snake;
 
 public interface IAmFood {
     public boolean collidesWithSnake(Snake snake);

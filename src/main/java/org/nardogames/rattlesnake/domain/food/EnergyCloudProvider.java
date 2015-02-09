@@ -3,7 +3,6 @@ package org.nardogames.rattlesnake.domain.food;
 import org.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
-import org.nardogames.rattlesnake.domain.IAmFood;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.Snake;
 
@@ -52,8 +51,8 @@ public class EnergyCloudProvider implements IProvideFood {
     @Override
     public void update(float deltaTime, Snake snake) {
         updateTimeLeft(deltaTime);
-        if(shouldProvideFood()) {
-            positions.add( (EnergyCloud)provideFood() );
+        if(shouldProvideMore()) {
+            positions.add( (EnergyCloud)createEntity() );
         }
         for(IAmFood food : positions) {
             if(food.collidesWithSnake(snake)) {
@@ -87,12 +86,12 @@ public class EnergyCloudProvider implements IProvideFood {
     }
 
     @Override
-    public boolean shouldProvideFood() {
+    public boolean shouldProvideMore() {
         return hasTimeLeft() && positions.size() < MAX_SIMULTANEOUS_FOOD && spawnRandomizer.nextFloat() > 0.99f;
     }
 
     @Override
-    public List<? extends IAmFood> getCurrentFood() {
+    public List<? extends IAmFood> getCurrentEntities() {
         return positions;
     }
 
@@ -106,8 +105,9 @@ public class EnergyCloudProvider implements IProvideFood {
         }
     }
 
+
     @Override
-    public IAmFood provideFood() {
+    public IAmFood createEntity() {
         float x = spawnRandomizer.nextFloat() * RattleSnake.getInstance().getDisplayWidth();
         float y = spawnRandomizer.nextFloat() * RattleSnake.getInstance().getDisplayHeight();
         EnergyCloud food =  new EnergyCloud(x, y, DEFAULT_ENERGY_CUBE_RADIUS * 0.75f);

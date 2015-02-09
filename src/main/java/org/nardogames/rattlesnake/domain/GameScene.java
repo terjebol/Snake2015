@@ -6,28 +6,29 @@ import org.nardogames.rattlesnake.common.content.IController;
 import org.nardogames.rattlesnake.common.content.IScene;
 import org.nardogames.rattlesnake.common.gl.TextureCoord2f;
 import org.nardogames.rattlesnake.common.gl.VBO;
-import org.nardogames.rattlesnake.common.particles.*;
+import org.nardogames.rattlesnake.common.particles.ParticleSystem;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.common.util.Vertex2f;
 import org.nardogames.rattlesnake.common.util.VertexUtils;
-import org.nardogames.rattlesnake.domain.enemies.FireEnemy;
-import org.nardogames.rattlesnake.domain.enemies.FireWhip;
+import org.nardogames.rattlesnake.domain.enemies.CometProvider;
+import org.nardogames.rattlesnake.domain.enemies.IAmEnemy;
+import org.nardogames.rattlesnake.domain.enemies.IProvideEnemies;
+import org.nardogames.rattlesnake.domain.enemies.SolarWhipProvider;
 import org.nardogames.rattlesnake.domain.food.EnergyCloudProvider;
+import org.nardogames.rattlesnake.domain.food.IAmFood;
 import org.nardogames.rattlesnake.domain.food.IProvideFood;
 import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GameScene implements IScene {
-    private Random randomizer;
     private boolean isInitialized;
-    private List<Enemy> currentEnemies;
     private List<IProvideFood> foodProviders;
     private Player player;
     private Texture backgroundTexture;
     private VBO vbo;
+    private List<IProvideEnemies> enemyProviders;
 
     @Override
     public boolean isInitialized() {
@@ -37,9 +38,11 @@ public class GameScene implements IScene {
     @Override
     public void initialize() {
         player = new Player();
-        currentEnemies = new ArrayList<>();
         foodProviders = new ArrayList<>();
         foodProviders.add(new EnergyCloudProvider());
+        enemyProviders = new ArrayList<>();
+        enemyProviders.add(new CometProvider());
+        enemyProviders.add(new SolarWhipProvider());
         backgroundTexture = TextureUtils.getTexture("textures/background_pow2.png");
         vbo = new VBO(1);
 
@@ -60,7 +63,6 @@ public class GameScene implements IScene {
         //txt = txt.top(1.2f).right(1.2f);
         vbo.putTextureCoords( txt );
         isInitialized = true;
-        randomizer = new Random();
     }
 
     @Override
@@ -71,7 +73,7 @@ public class GameScene implements IScene {
     @Override
     public void update(float deltaTime) {
         updateFood(deltaTime);
-        spawnEnemyIfPossible();
+//        spawnEnemyIfPossible();
         updateEnemies(deltaTime);
         player.update(deltaTime);
         ParticleSystem.globalInstance().update(deltaTime);
@@ -87,7 +89,7 @@ public class GameScene implements IScene {
     }
 
     private void checkFoodCollisionsWithSnake(IProvideFood provider) {
-        List<? extends IAmFood> currentFood = provider.getCurrentFood();
+        List<? extends IAmFood> currentFood = provider.getCurrentEntities();
         Snake snake = player.getSnake();
         for(IAmFood food : currentFood) {
             if(food.collidesWithSnake(snake)) {
@@ -107,34 +109,33 @@ public class GameScene implements IScene {
         }
     }
 
-    private void updateEnemies(float delta) {
-        for(Enemy e: currentEnemies) {
-            e.update(delta);
-            if(!e.isActive()) {
-                e.dispose();
-            }
-        }
-        checkEnemyCollisionsWithSnake();
-    }
-
-    private void spawnEnemyIfPossible() {
-        float rnd = randomizer.nextFloat();
-        if(rnd > 0.98f) {
-            if(rnd > 0.995f) {
-                currentEnemies.add(FireWhip.createNewEnemy());
-            }
-            else {
-                currentEnemies.add(FireEnemy.createNewEnemy());
-            }
-        }
-    }
-
-    private void checkEnemyCollisionsWithSnake() {
+    private void updateEnemies(float deltaTime) {
         Snake snake = player.getSnake();
-        for(Enemy enemy : currentEnemies) {
+        for(IProvideEnemies provider: enemyProviders) {
+            provider.update(deltaTime, snake);
+            checkEnemyCollisionsWithSnake(provider);
+        }
+        addAndRemoveEnemyProviders();
+    }
+
+    private void checkEnemyCollisionsWithSnake(IProvideEnemies provider) {
+        List<? extends IAmEnemy> currentEnemy = provider.getCurrentEntities();
+        Snake snake = player.getSnake();
+        for(IAmEnemy enemy : currentEnemy) {
             if(enemy.collidesWithSnake(snake)) {
                 snake.notifyHitByEnemy(enemy);
                 enemy.notifyHitSnake();
+            }
+        }
+
+    }
+
+    private void addAndRemoveEnemyProviders() {
+        for(int i = enemyProviders.size()-1; i>=0; i--) {
+            IProvideEnemies provider = enemyProviders.get(i);
+            if(provider.isInactive()) {
+                enemyProviders.remove(i);
+                provider.dispose();
             }
         }
     }

@@ -5,6 +5,8 @@ import org.lwjgl.input.Keyboard;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.Collision;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
+import org.nardogames.rattlesnake.domain.enemies.IAmEnemy;
+import org.nardogames.rattlesnake.domain.food.IAmFood;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
@@ -138,7 +140,7 @@ public class Snake {
         particleEmitter.getPosition().getVelocity().add(theta).normalise().scale(SNAKE_DEFAULT_SPEED_SCALER);
     }
 
-    public void notifyHitByEnemy(Enemy enemy) {
+    public void notifyHitByEnemy(IAmEnemy enemy) {
 
     }
 

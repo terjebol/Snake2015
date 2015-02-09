@@ -1,39 +1,42 @@
 package org.nardogames.rattlesnake.domain.enemies;
 
-import org.fastmath.easing.IEasingMethod;
 import org.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
-import org.nardogames.rattlesnake.domain.Enemy;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.Snake;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 import java.util.Random;
 
-/**
- * Created by Terje on 28.01.2015.
- */
-public class FireEnemy extends Enemy {
+public class Comet implements IAmEnemy {
 
+    private static Random randomizer;
     private SinglePositionParticleEmitter particleEmitter;
-    private static Random randomizer = new Random();
-    private Vector2f velocity;
-    private float x, y;
+    private ParticleEmitterPosition position;
 
+    protected static Comet create(Vector2f vector) {
+        Vector2f positionVector = createRandomizedPosition(vector);
 
-    public static FireEnemy createNewEnemy() {
-        Vector2f enemyVector = createRandomizedVector();
-        Vector2f enemyPosition = createRandomizedPosition(enemyVector);
-        FireEnemy fireEnemy = new FireEnemy(enemyPosition, enemyVector);
-        fireEnemy.initializeParticleEmitter();
-        return fireEnemy;
+        Comet comet = new Comet();
+        comet.position = new ParticleEmitterPosition(positionVector.getX(), positionVector.getY(), vector);
+        comet.initializeParticleEmitter();
+        return comet;
+
     }
 
-    private static Vector2f createRandomizedVector() {
-        return new Vector2f(
-                2f * (-0.5f + randomizer.nextFloat()),
-                2f * (-0.5f + randomizer.nextFloat())).normalise().scale(0.25f);
+    private void initializeParticleEmitter() {
+
+        particleEmitter = new SinglePositionParticleEmitter(
+                TextureUtils.getTexture("textures/sphere.png"),
+                new CompetParticleCreator(position),
+                new FireParticleUpdater(Linear.easeIn),
+                new DefaultParticleBlender(), 200);
+
+        particleEmitter.setPosition(position);
+        particleEmitter.initializeParticles(0);
+        ParticleSystem.globalInstance().addEmitter(particleEmitter);
     }
 
     private static Vector2f createRandomizedPosition(Vector2f velocity) {
@@ -51,28 +54,9 @@ public class FireEnemy extends Enemy {
         return new Vector2f(posX, posY);
     }
 
-    public FireEnemy(Vector2f pos, Vector2f velocity) {
-        this.velocity = velocity;
-        x = pos.getX();
-        y = pos.getY();
-
-    }
-
-    private void initializeParticleEmitter() {
-        ParticleEmitterPosition position = new ParticleEmitterPosition(x, y, velocity);
-        particleEmitter = new SinglePositionParticleEmitter(
-                TextureUtils.getTexture("textures/sphere.png"),
-                new FireParticleCreator(position),
-                new FireParticleUpdater(Linear.easeIn),
-                new DefaultParticleBlender(), 200);
-        particleEmitter.setPosition(position);
-        particleEmitter.initializeParticles(0);
-        ParticleSystem.globalInstance().addEmitter(particleEmitter);
-    }
-
     @Override
     public boolean isActive() {
-        return true;
+        return false;
     }
 
     @Override
@@ -85,20 +69,30 @@ public class FireEnemy extends Enemy {
 
     }
 
-    public void update(float deltaTime) {
-        particleEmitter.update(deltaTime);
+    @Override
+    public void update(float delta) {
+
+    }
+
+    @Override
+    public float getX() {
+        return position.getX();
+    }
+
+    @Override
+    public float getY() {
+        return position.getY();
     }
 
     @Override
     public void dispose() {
-        ParticleSystem.globalInstance().removeEmitter( particleEmitter );
+        ParticleSystem.globalInstance().removeEmitter(particleEmitter);
     }
 
-
-    private static class FireParticleCreator extends DefaultParticleCreator {
+    private static class CompetParticleCreator extends DefaultParticleCreator {
         private ParticleEmitterPosition position;
 
-        public FireParticleCreator(ParticleEmitterPosition position) {
+        public CompetParticleCreator(ParticleEmitterPosition position) {
 
             this.position = position;
         }
@@ -143,6 +137,4 @@ public class FireEnemy extends Enemy {
             return 2000;
         }
     }
-
-
 }

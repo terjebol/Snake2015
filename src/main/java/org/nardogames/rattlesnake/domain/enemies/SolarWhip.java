@@ -3,7 +3,6 @@ package org.nardogames.rattlesnake.domain.enemies;
 import org.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
-import org.nardogames.rattlesnake.domain.Enemy;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.Snake;
 import org.newdawn.slick.geom.Vector2f;
@@ -13,7 +12,7 @@ import java.util.Random;
 /**
  * Created by Terje on 07.02.2015.
  */
-public class FireWhip extends Enemy {
+public class SolarWhip implements IAmEnemy {
 
     private SinglePositionParticleEmitter particleEmitter;
     private static Random randomizer = new Random();
@@ -21,9 +20,9 @@ public class FireWhip extends Enemy {
     private float x, y;
 
 
-    public static FireWhip createNewEnemy() {
+    public static SolarWhip create() {
         Vector2f enemyPosition = createRandomizedPosition();
-        FireWhip fireWhip = new FireWhip(enemyPosition);
+        SolarWhip fireWhip = new SolarWhip(enemyPosition);
         fireWhip.initializeParticleEmitter();
         return fireWhip;
     }
@@ -32,12 +31,12 @@ public class FireWhip extends Enemy {
 
         float w = RattleSnake.getInstance().getDisplayWidth();
         float h = RattleSnake.getInstance().getDisplayHeight();
-        float posX = (0.2f * w) + randomizer.nextFloat() * (0.6f * w);
-        float posY = (0.2f * h) + randomizer.nextFloat() * (0.6f * h);
+        float posX = (0.2f * w) + (randomizer.nextFloat() * (0.6f * w));
+        float posY = (0.2f * h) + (randomizer.nextFloat() * (0.6f * h));
         return new Vector2f(posX, posY);
     }
 
-    public FireWhip(Vector2f pos) {
+    public SolarWhip(Vector2f pos) {
         x = pos.getX();
         y = pos.getY();
     }
@@ -74,9 +73,20 @@ public class FireWhip extends Enemy {
     }
 
     @Override
+    public float getX() {
+        return 0;
+    }
+
+    @Override
+    public float getY() {
+        return 0;
+    }
+
+    @Override
     public void dispose() {
 
     }
+
 
     private static class SunFlareParticleCreator extends DefaultParticleCreator {
 
