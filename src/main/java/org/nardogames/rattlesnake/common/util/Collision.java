@@ -1,6 +1,6 @@
 package org.nardogames.rattlesnake.common.util;
 
-import org.fastmath.Distance;
+import org.nardogames.fastmath.Distance;
 
 /**
  * Created by Terje on 26.01.2015.

@@ -1,7 +1,7 @@
 package org.nardogames.rattlesnake.domain;
 
-import org.fastmath.easing.Linear;
 import org.lwjgl.input.Keyboard;
+import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.Collision;
 import org.nardogames.rattlesnake.common.util.TextureUtils;

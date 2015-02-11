@@ -1,12 +1,12 @@
 package org.nardogames.rattlesnake.domain.enemies;
 
-import org.fastmath.easing.Linear;
+
+import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.Snake;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.opengl.Texture;
 
 import java.util.Random;
 

@@ -1,6 +1,6 @@
 package org.nardogames.rattlesnake.domain.food;
 
-import org.fastmath.easing.Linear;
+import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.domain.RattleSnake;

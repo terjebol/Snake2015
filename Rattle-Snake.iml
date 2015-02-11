@@ -24,7 +24,7 @@
     <orderEntry type="module-library">
       <library name="Maven: javax.jnlp:jnlp-api:5.0">
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/jdk1.8.0_11/jre/lib/javaws.jar!/" />
+          <root url="jar://C:/Program Files/Java/jdk1.8.0_20/jre/lib/javaws.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -36,6 +36,5 @@
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.nardogames:fastmath:0.1-SNAPSHOT" level="project" />
   </component>
 </module>

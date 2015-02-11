@@ -1,6 +1,7 @@
 package org.nardogames.rattlesnake.domain.enemies;
 
-import org.fastmath.easing.IEasingMethod;
+
+import org.nardogames.fastmath.easing.IEasingMethod;
 import org.nardogames.rattlesnake.common.particles.DefaultParticleUpdater;
 
 /**

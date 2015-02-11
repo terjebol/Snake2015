@@ -1,7 +1,7 @@
 package org.nardogames.rattlesnake.common.particles;
 
 
-import org.fastmath.easing.IEasingMethod;
+import org.nardogames.fastmath.easing.IEasingMethod;
 
 public class DefaultParticleUpdater extends AbstractParticleUpdater {
 
