@@ -148,14 +148,14 @@ public class GameScene implements IScene {
 
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
         GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
+
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_BLEND);
         backgroundTexture.bind();
         vbo.render();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
 
         ParticleSystem.globalInstance().render();
+
         GL11.glDisableClientState(GL11.GL_COLOR_ARRAY);
         GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
     }

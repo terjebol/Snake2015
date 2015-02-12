@@ -157,6 +157,8 @@ public class VBO {
         }
 
         GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
+
 
         // bind and buffer vertex data. Bind needs to be done, but bufferData
         // should optimally not be done here on every loop.
@@ -174,6 +176,7 @@ public class VBO {
         GL11.glTranslatef(x, y, 0f);
         GL11.glDrawArrays(drawMode, 0, numEntities * verticesPrEntity);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 
     }
 }
