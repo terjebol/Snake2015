@@ -2,7 +2,7 @@ package org.nardogames.rattlesnake.domain.food;
 
 import org.nardogames.rattlesnake.common.particles.ParticleEmitterPosition;
 import org.nardogames.rattlesnake.common.util.Collision;
-import org.nardogames.rattlesnake.domain.Snake;
+import org.nardogames.rattlesnake.domain.player.Player;
 
 public class EnergyCloud extends ParticleEmitterPosition implements IAmFood {
 
@@ -16,25 +16,15 @@ public class EnergyCloud extends ParticleEmitterPosition implements IAmFood {
     }
 
     @Override
-    public boolean collidesWithSnake(Snake snake) {
-        float x = snake.getX();
-        float y = snake.getY();
-        float snakeRadius = snake.getSnakeRadius();
+    public boolean collidesWithSnake(Player player) {
+        float x = player.getX();
+        float y = player.getY();
+        float snakeRadius = player.getSnakeRadius();
         return Collision.circleIntersectsCircle(x, y, snakeRadius, getX(), getY(), collisionRadius);
     }
 
     @Override
-    public void notifyEaten() {
-        isEaten = true;
-    }
-
-    @Override
-    public boolean isEaten() {
-        return isEaten;
-    }
-
-    @Override
-    public double getScore() {
-        return 50.0;
+    public float getScore() {
+        return 10f;
     }
 }

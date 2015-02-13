@@ -1,8 +1,6 @@
 package org.nardogames.rattlesnake.domain.enemies;
 
-import org.nardogames.rattlesnake.domain.RattleSnake;
-import org.nardogames.rattlesnake.domain.Snake;
-import org.newdawn.slick.geom.Vector2f;
+import org.nardogames.rattlesnake.domain.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,7 @@ public class SolarWhipProvider implements IProvideEnemies {
     }
 
     @Override
-    public void update(float deltaTime, Snake snake) {
+    public void update(float deltaTime, Player player) {
         if (shouldProvideMore()) {
             solarWhips.add((SolarWhip) createEntity());
         }

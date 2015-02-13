@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Created by tebaol on 01.09.2014.
  */
-public abstract class AbstractParticleCreator implements ICreateParticles {
+public abstract class AbstractParticleCreator {
     private Random randomizer;
 
     protected AbstractParticleCreator() {
@@ -27,7 +27,6 @@ public abstract class AbstractParticleCreator implements ICreateParticles {
         return true;
     }
 
-    @Override
     public Particle createParticle() {
         Particle p = new Particle();
         p.x = getNewParticlePositionX();

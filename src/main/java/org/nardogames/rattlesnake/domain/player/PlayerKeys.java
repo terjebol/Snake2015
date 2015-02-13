@@ -1,20 +1,14 @@
-package org.nardogames.rattlesnake.domain;
+package org.nardogames.rattlesnake.domain.player;
 
 import org.lwjgl.input.Keyboard;
 import org.nardogames.rattlesnake.common.keyboard.AbstractKeyEventListener;
 
-public class Player extends AbstractKeyEventListener {
-    private Snake snake;
-    private Score score;
+public class PlayerKeys extends AbstractKeyEventListener {
+    private Player player;
 
-    public Player() {
-        snake = new Snake();
-        score = new Score();
-        RattleSnake.getInstance().getKeyboardController().addListener(this);
-    }
+    public PlayerKeys(Player player) {
+        this.player = player;
 
-    public void update(float deltaTime) {
-        snake.update(deltaTime);
     }
 
     @Override
@@ -25,11 +19,11 @@ public class Player extends AbstractKeyEventListener {
     public void notifyKeyIsDown(int key, float deltaTime) {
         double rotation = 0.5 * deltaTime;
         if(isRightArrow(key)) {
-            snake.rotate( -rotation);
+            player.getSnake().rotate( -rotation);
             return;
         }
         if(isLeftArrow(key)) {
-            snake.rotate( rotation);
+            player.getSnake().rotate( rotation);
         }
     }
 
@@ -39,13 +33,5 @@ public class Player extends AbstractKeyEventListener {
 
     public boolean isLeftArrow(int key) {
         return key == Keyboard.KEY_LEFT;
-    }
-
-    public Snake getSnake() {
-        return snake;
-    }
-
-    public Score getScore() {
-        return score;
     }
 }

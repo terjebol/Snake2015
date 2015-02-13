@@ -15,8 +15,9 @@ import org.nardogames.rattlesnake.domain.enemies.IAmEnemy;
 import org.nardogames.rattlesnake.domain.enemies.IProvideEnemies;
 import org.nardogames.rattlesnake.domain.enemies.SolarWhipProvider;
 import org.nardogames.rattlesnake.domain.food.EnergyCloudProvider;
-import org.nardogames.rattlesnake.domain.food.IAmFood;
 import org.nardogames.rattlesnake.domain.food.IProvideFood;
+import org.nardogames.rattlesnake.domain.player.Player;
+import org.nardogames.rattlesnake.domain.player.Snake;
 import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayList;
@@ -73,31 +74,30 @@ public class GameScene implements IScene {
     @Override
     public void update(float deltaTime) {
         updateFood(deltaTime);
-//        spawnEnemyIfPossible();
         updateEnemies(deltaTime);
         player.update(deltaTime);
         ParticleSystem.globalInstance().update(deltaTime);
     }
 
     private void updateFood(float deltaTime) {
-        Snake snake = player.getSnake();
+        //Snake snake = player.getSnake();
         for(IProvideFood provider : foodProviders) {
-            provider.update(deltaTime, snake);
-            checkFoodCollisionsWithSnake(provider);
+            provider.update(deltaTime, player);
+            //checkFoodCollisionsWithSnake(provider);
         }
         addAndRemoveFoodProviders();
     }
 
-    private void checkFoodCollisionsWithSnake(IProvideFood provider) {
-        List<? extends IAmFood> currentFood = provider.getCurrentEntities();
-        Snake snake = player.getSnake();
-        for(IAmFood food : currentFood) {
-            if(food.collidesWithSnake(snake)) {
-                snake.notifyAteFood(food);
-                food.notifyEaten();
-            }
-        }
-    }
+//    private void checkFoodCollisionsWithSnake(IProvideFood provider) {
+//        List<? extends IAmFood> currentFood = provider.getCurrentEntities();
+//        Snake snake = player.getSnake();
+//        for(IAmFood food : currentFood) {
+//            if(food.collidesWithSnake(snake)) {
+//                snake.eatFood(food);
+//                food.notifyEaten();
+//            }
+//        }
+//    }
 
     private void addAndRemoveFoodProviders() {
         for(int i = foodProviders.size()-1; i>=0; i--) {
@@ -110,9 +110,9 @@ public class GameScene implements IScene {
     }
 
     private void updateEnemies(float deltaTime) {
-        Snake snake = player.getSnake();
+        //Snake snake = player.getSnake();
         for(IProvideEnemies provider: enemyProviders) {
-            provider.update(deltaTime, snake);
+            provider.update(deltaTime, player);
             checkEnemyCollisionsWithSnake(provider);
         }
         addAndRemoveEnemyProviders();
@@ -120,10 +120,10 @@ public class GameScene implements IScene {
 
     private void checkEnemyCollisionsWithSnake(IProvideEnemies provider) {
         List<? extends IAmEnemy> currentEnemy = provider.getCurrentEntities();
-        Snake snake = player.getSnake();
+        //Snake snake = player.getSnake();
         for(IAmEnemy enemy : currentEnemy) {
-            if(enemy.collidesWithSnake(snake)) {
-                snake.notifyHitByEnemy(enemy);
+            if(enemy.collidesWithSnake(player)) {
+//                snake.notifyHitByEnemy(enemy);
                 enemy.notifyHitSnake();
             }
         }

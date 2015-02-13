@@ -4,7 +4,8 @@ import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.domain.RattleSnake;
-import org.nardogames.rattlesnake.domain.Snake;
+import org.nardogames.rattlesnake.domain.player.Player;
+import org.nardogames.rattlesnake.domain.player.Snake;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +32,12 @@ public class EnergyCloudProvider implements IProvideFood {
         totalTimeLeftInSeconds = 20f;
     }
     private void initializeParticleEmitter() {
+        FoodSet foodSet = new FoodSet();
         particleEmitter = new MultiPositionParticleEmitter(
                 TextureUtils.getTexture("textures/sphere.png"),
                 new EnergyCubeParticleCreator(DEFAULT_ENERGY_CUBE_RADIUS * 2),
-                new DefaultParticleUpdater(Linear.easeIn),
-                new DefaultParticleBlender(), 75);
+                foodSet.getUpdater(),
+                foodSet.getBlender(), 75);
         particleEmitter.initializeParticles(10);
         ParticleSystem.globalInstance().addEmitter(particleEmitter);
         activate();
@@ -49,21 +51,28 @@ public class EnergyCloudProvider implements IProvideFood {
     }
 
     @Override
-    public void update(float deltaTime, Snake snake) {
+    public void update(float deltaTime, Player player) {
         updateTimeLeft(deltaTime);
         if(shouldProvideMore()) {
             positions.add( (EnergyCloud)createEntity() );
         }
-        for(IAmFood food : positions) {
-            if(food.collidesWithSnake(snake)) {
-                food.notifyEaten();
-            }
-        }
-        removeEatenFood();
+
+        handleCollisions(player);
 
         if(positionsNeedUpdate) {
             updatePositions();
             positionsNeedUpdate = false;
+        }
+    }
+
+    private void handleCollisions(Player player) {
+        for(int i = positions.size()-1;i>=0; i--) {
+            IAmFood food = positions.get(i);
+            if(food.collidesWithSnake(player)) {
+                player.eatFood(food);
+                positions.remove(i);
+                positionsNeedUpdate = true;
+            }
         }
     }
 
@@ -95,15 +104,15 @@ public class EnergyCloudProvider implements IProvideFood {
         return positions;
     }
 
-    private void removeEatenFood() {
-        for(int i = positions.size()-1; i>=0; i--) {
-            IAmFood food = positions.get(i);
-            if(food.isEaten()) {
-                positions.remove(i);
-                positionsNeedUpdate = true;
-            }
-        }
-    }
+//    private void removeEatenFood() {
+//        for(int i = positions.size()-1; i>=0; i--) {
+//            IAmFood food = positions.get(i);
+//            if(food.isEaten()) {
+//                positions.remove(i);
+//                positionsNeedUpdate = true;
+//            }
+//        }
+//    }
 
 
     @Override
@@ -116,7 +125,7 @@ public class EnergyCloudProvider implements IProvideFood {
         return food;
     }
 
-    private static class EnergyCubeParticleCreator extends DefaultParticleCreator {
+    private static class EnergyCubeParticleCreator extends DefaultParticleSet.DefaultParticleCreator {
         private float cubeSize;
 
         public EnergyCubeParticleCreator(float cubeSize) {

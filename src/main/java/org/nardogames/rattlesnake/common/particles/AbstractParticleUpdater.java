@@ -5,11 +5,10 @@ import java.util.List;
 /**
  * Created by tebaol on 01.09.2014.
  */
-public abstract class AbstractParticleUpdater implements IUpdateParticles {
+public abstract class AbstractParticleUpdater {
     private static float[] colorPlaceholder = new float[3];
     private static float[] sizePlaceholder = new float[2];
 
-    @Override
     public void updateParticles(List<Particle> particleList, float delta) {
         for(int i = particleList.size()-1; i>= 0; i--) {
             Particle p = particleList.get(i);

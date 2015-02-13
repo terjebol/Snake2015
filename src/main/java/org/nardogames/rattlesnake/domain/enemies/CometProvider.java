@@ -1,7 +1,8 @@
 package org.nardogames.rattlesnake.domain.enemies;
 
 import org.nardogames.rattlesnake.domain.RattleSnake;
-import org.nardogames.rattlesnake.domain.Snake;
+import org.nardogames.rattlesnake.domain.player.Player;
+import org.nardogames.rattlesnake.domain.player.Snake;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -38,14 +39,14 @@ public class CometProvider implements IProvideEnemies {
     }
 
     @Override
-    public void update(float deltaTime, Snake snake) {
+    public void update(float deltaTime, Player player) {
         if (shouldProvideMore()) {
             comets.add((Comet) createEntity());
         }
         for (int i = comets.size() - 1; i >= 0; i--) {
             Comet comet = comets.get(i);
 
-            if (comet.collidesWithSnake(snake)) {
+            if (comet.collidesWithSnake(player)) {
                 comet.notifyHitSnake();
             }
 

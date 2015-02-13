@@ -13,6 +13,10 @@ import java.util.ArrayList;
  */
 public class SinglePositionParticleEmitter extends AbstractParticleEmitter{
 
+
+    public SinglePositionParticleEmitter(Texture particleTexture, ParticleSet particleSet, int maximumParticles) {
+        this(particleTexture, particleSet.getCreator(), particleSet.getUpdater(), particleSet.getBlender(), maximumParticles);
+    }
     public SinglePositionParticleEmitter(Texture particleTexture, AbstractParticleCreator particlePlacer, AbstractParticleUpdater particleUpdater, IBlendParticles particleBlender, int maximumParticles) {
         super(particleTexture, particlePlacer, particleUpdater, particleBlender, maximumParticles);
 

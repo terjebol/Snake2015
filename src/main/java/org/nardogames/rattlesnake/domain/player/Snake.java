@@ -1,12 +1,12 @@
-package org.nardogames.rattlesnake.domain;
+package org.nardogames.rattlesnake.domain.player;
 
-import org.lwjgl.input.Keyboard;
+import com.sun.deploy.security.DeployClientAuthCertStore;
 import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.Collision;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
+import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.enemies.IAmEnemy;
-import org.nardogames.rattlesnake.domain.food.IAmFood;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class Snake {
     private final static float SNAKE_DEFAULT_SPEED_SCALER = 0.15f;
     private final static float SNAKE_DEFAULT_SIZE = 5f;
     private final static float SNAKE_MINIMUM_SIZE = 4f;
-    private final static float SNAKE_MAXIMUM_SIZE = 10f;
+    private final static float SNAKE_MAXIMUM_SIZE = 20f;
     private float snakeSize;
 
     public Snake() {
@@ -30,21 +30,23 @@ public class Snake {
         float emittery = RattleSnake.getInstance().getDisplayHeight() * 0.5f;
         Vector2f snakeVector = new Vector2f(0.1f, 0f).normalise().scale(SNAKE_DEFAULT_SPEED_SCALER);
         emitterPosition = new ParticleEmitterPosition(emitterx,emittery, snakeVector);
+        ParticleSet particleSet = new ParticleSet(
+                new SnakeParticleCreator(this),
+                new FoodSet.FoodParticleUpdater(Linear.easeIn),
+                DefaultParticleSet.get().getBlender());
         particleEmitter = new SinglePositionParticleEmitter(
                 TextureUtils.getTexture("textures/sphere.png"),
-                new SnakeParticleCreator(this),
-                new DefaultParticleUpdater(Linear.easeIn),
-                new DefaultParticleBlender(), 200);
+                particleSet, 200);
         particleEmitter.setPosition(emitterPosition);
         particleEmitter.initializeParticles(10);
         ParticleSystem.globalInstance().addEmitter(particleEmitter);
     }
 
-    public float getX() {
+    protected float getX() {
         return emitterPosition.getX();
     }
 
-    public float getY() {
+    protected float getY() {
         return emitterPosition.getY();
     }
 
@@ -56,11 +58,11 @@ public class Snake {
         return snakeSize;
     }
 
-    public float getSnakeRadius() {
+    protected float getSnakeRadius() {
         return snakeSize * 4f;
     }
 
-    public boolean containsPoint(float x, float y) {
+    protected boolean containsPoint(float x, float y) {
 
         float radius = getSnakeRadius();
         Vector2f normalised = emitterPosition.getVelocity().copy().normalise();
@@ -69,29 +71,18 @@ public class Snake {
         return Collision.circleContainsPoint(ix, iy, radius, x, y);
     }
 
-    public void update(float deltaTime) {
-
-//        if(particleEmitter.hasRoomForMoreParticles()) {
-//            particleEmitter.addParticle();
-//        }
+    protected void update(float deltaTime) {
         particleEmitter.update(deltaTime);
         List<Particle> particles = particleEmitter.getParticleList();
         for(Particle particle : particles) {
             if(particle.active) {
                 if (containsPoint(particle.x, particle.y)) {
-                    System.out.println("Hit particle!!");
+                    //System.out.println("Hit particle!!");
                 }
             }
         }
 
         flipSnakePositionIfNecessary();
-
-        if(Keyboard.isKeyDown(Keyboard.KEY_1)) {
-            shrinkSnake();
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_2)) {
-            growSnake();
-        }
     }
 
     private void shrinkSnake() {
@@ -102,8 +93,8 @@ public class Snake {
         }
     }
 
-    public void growSnake() {
-        setSnakeSize( getSnakeSize() + 0.1f);
+    protected void growSnake(float score) {
+        setSnakeSize( getSnakeSize() + (0.1f * score));
         if(getSnakeSize() > SNAKE_MAXIMUM_SIZE) {
             setSnakeSize(SNAKE_MAXIMUM_SIZE);
         }
@@ -136,19 +127,17 @@ public class Snake {
         }
     }
 
-    public void rotate(double theta) {
+    protected void rotate(double theta) {
         particleEmitter.getPosition().getVelocity().add(theta).normalise().scale(SNAKE_DEFAULT_SPEED_SCALER);
     }
 
-    public void notifyHitByEnemy(IAmEnemy enemy) {
+    protected void notifyHitByEnemy(IAmEnemy enemy) {
 
     }
 
-    public void notifyAteFood(IAmFood food) {
-    }
 
 
-    private static class SnakeParticleCreator extends DefaultParticleCreator {
+    private static class SnakeParticleCreator extends DefaultParticleSet.DefaultParticleCreator {
         private Snake snake;
 
         public SnakeParticleCreator(Snake snake) {

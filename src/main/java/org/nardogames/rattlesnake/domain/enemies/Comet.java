@@ -5,7 +5,8 @@ import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.domain.RattleSnake;
-import org.nardogames.rattlesnake.domain.Snake;
+import org.nardogames.rattlesnake.domain.player.Player;
+import org.nardogames.rattlesnake.domain.player.Snake;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -32,7 +33,7 @@ public class Comet implements IAmEnemy {
                 TextureUtils.getTexture("textures/sphere.png"),
                 new CompetParticleCreator(position),
                 new FireParticleUpdater(Linear.easeIn),
-                new DefaultParticleBlender(), 200);
+                DefaultParticleSet.get().getBlender(), 200);
 
         particleEmitter.setPosition(position);
         particleEmitter.initializeParticles(0);
@@ -60,7 +61,7 @@ public class Comet implements IAmEnemy {
     }
 
     @Override
-    public boolean collidesWithSnake(Snake snake) {
+    public boolean collidesWithSnake(Player player) {
         return false;
     }
 
@@ -89,7 +90,7 @@ public class Comet implements IAmEnemy {
         ParticleSystem.globalInstance().removeEmitter(particleEmitter);
     }
 
-    private static class CompetParticleCreator extends DefaultParticleCreator {
+    private static class CompetParticleCreator extends DefaultParticleSet.DefaultParticleCreator {
         private ParticleEmitterPosition position;
 
         public CompetParticleCreator(ParticleEmitterPosition position) {
