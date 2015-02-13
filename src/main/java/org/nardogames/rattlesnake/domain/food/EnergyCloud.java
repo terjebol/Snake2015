@@ -7,11 +7,9 @@ import org.nardogames.rattlesnake.domain.player.Player;
 public class EnergyCloud extends ParticleEmitterPosition implements IAmFood {
 
     private float collisionRadius;
-    private boolean isEaten;
 
     protected EnergyCloud(float x, float y, float collisionRadius) {
         super(x, y);
-        isEaten = false;
         this.collisionRadius = collisionRadius;
     }
 

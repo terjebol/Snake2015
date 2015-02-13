@@ -131,12 +131,6 @@ public class Snake {
         particleEmitter.getPosition().getVelocity().add(theta).normalise().scale(SNAKE_DEFAULT_SPEED_SCALER);
     }
 
-    protected void notifyHitByEnemy(IAmEnemy enemy) {
-
-    }
-
-
-
     private static class SnakeParticleCreator extends DefaultParticleSet.DefaultParticleCreator {
         private Snake snake;
 

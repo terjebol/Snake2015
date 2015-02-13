@@ -34,9 +34,6 @@ public class RattleSnake implements FPSListener {
         return instance;
     }
 
-    public static <T extends AbstractSprite> IController<T> getController(ControllerType controllerType) {
-        return getInstance().getCurrentScene().getController(controllerType);
-    }
     public KeyboardController getKeyboardController() {
         return keyboardController;
     }

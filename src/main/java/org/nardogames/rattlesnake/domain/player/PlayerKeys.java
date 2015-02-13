@@ -8,7 +8,6 @@ public class PlayerKeys extends AbstractKeyEventListener {
 
     public PlayerKeys(Player player) {
         this.player = player;
-
     }
 
     @Override

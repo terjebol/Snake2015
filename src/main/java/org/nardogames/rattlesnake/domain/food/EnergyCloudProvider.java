@@ -1,11 +1,12 @@
 package org.nardogames.rattlesnake.domain.food;
 
-import org.nardogames.fastmath.easing.Linear;
-import org.nardogames.rattlesnake.common.particles.*;
+import org.nardogames.rattlesnake.common.particles.DefaultParticleSet;
+import org.nardogames.rattlesnake.common.particles.FoodSet;
+import org.nardogames.rattlesnake.common.particles.MultiPositionParticleEmitter;
+import org.nardogames.rattlesnake.common.particles.ParticleSystem;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.player.Player;
-import org.nardogames.rattlesnake.domain.player.Snake;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +44,7 @@ public class EnergyCloudProvider implements IProvideFood {
         activate();
     }
 
-    private void updatePositions() {
-        particleEmitter.clearPositions();
-        for(EnergyCloud cloud : positions) {
-            particleEmitter.addPosition(cloud);
-        }
-    }
+
 
     @Override
     public void update(float deltaTime, Player player) {
@@ -56,9 +52,7 @@ public class EnergyCloudProvider implements IProvideFood {
         if(shouldProvideMore()) {
             positions.add( (EnergyCloud)createEntity() );
         }
-
         handleCollisions(player);
-
         if(positionsNeedUpdate) {
             updatePositions();
             positionsNeedUpdate = false;
@@ -73,6 +67,13 @@ public class EnergyCloudProvider implements IProvideFood {
                 positions.remove(i);
                 positionsNeedUpdate = true;
             }
+        }
+    }
+
+    private void updatePositions() {
+        particleEmitter.clearPositions();
+        for(EnergyCloud cloud : positions) {
+            particleEmitter.addPosition(cloud);
         }
     }
 
@@ -103,17 +104,6 @@ public class EnergyCloudProvider implements IProvideFood {
     public List<? extends IAmFood> getCurrentEntities() {
         return positions;
     }
-
-//    private void removeEatenFood() {
-//        for(int i = positions.size()-1; i>=0; i--) {
-//            IAmFood food = positions.get(i);
-//            if(food.isEaten()) {
-//                positions.remove(i);
-//                positionsNeedUpdate = true;
-//            }
-//        }
-//    }
-
 
     @Override
     public IAmFood createEntity() {

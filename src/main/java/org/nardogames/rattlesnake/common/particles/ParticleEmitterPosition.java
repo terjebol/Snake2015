@@ -29,6 +29,4 @@ public class ParticleEmitterPosition {
         x += velocity.x * deltaTime;
         y += velocity.y * deltaTime;
     }
-
-    public final static ParticleEmitterPosition empty = new ParticleEmitterPosition(0f,0f, new Vector2f());
 }

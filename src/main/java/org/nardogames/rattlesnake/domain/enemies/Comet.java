@@ -12,8 +12,6 @@ import org.newdawn.slick.geom.Vector2f;
 import java.util.Random;
 
 public class Comet implements IAmEnemy {
-
-    private static Random randomizer;
     private SinglePositionParticleEmitter particleEmitter;
     private ParticleEmitterPosition position;
 
@@ -53,11 +51,6 @@ public class Comet implements IAmEnemy {
         if(posY < 0f) posY = 0f;
         if(posY >= h) posY = h;
         return new Vector2f(posX, posY);
-    }
-
-    @Override
-    public boolean isActive() {
-        return false;
     }
 
     @Override

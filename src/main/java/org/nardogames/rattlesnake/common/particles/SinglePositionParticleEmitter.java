@@ -45,16 +45,8 @@ public class SinglePositionParticleEmitter extends AbstractParticleEmitter{
     @Override
     protected void onRenderBuffer(VBO buffer) {
         GL11.glPushMatrix();
-        //GL11.glTranslatef(getPosition().getX(), getPosition().getY(), 0f);
         buffer.render();
         GL11.glPopMatrix();
-//        for (ParticleEmitterPosition position : positionList) {
-//
-//
-//            GL11.glPushMatrix();
-//            buffer.render(position.getX(), position.getY());
-//            GL11.glPopMatrix();
-//        }
     }
 
 }

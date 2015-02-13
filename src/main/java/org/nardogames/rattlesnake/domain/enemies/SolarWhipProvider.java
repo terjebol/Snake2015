@@ -43,8 +43,6 @@ public class SolarWhipProvider implements IProvideEnemies {
 
     }
 
-
-
     @Override
     public void dispose() {
 

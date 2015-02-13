@@ -16,7 +16,7 @@ public class FireParticleUpdater extends DefaultParticleSet.DefaultParticleUpdat
     public float[] getColor(float factorOfTtl) {
         float factor = easingMethod.execute(factorOfTtl, 0f, 1f, 1f);
         return new float[]{
-                1f, Math.max(0.5f - factor, 0f), 0f //0.5f - (0.5f * factor)
+                1f, Math.max(0.5f - factor, 0f), 0f
         };
     }
 }

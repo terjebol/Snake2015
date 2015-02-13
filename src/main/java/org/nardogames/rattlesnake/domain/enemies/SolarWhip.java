@@ -17,7 +17,6 @@ public class SolarWhip implements IAmEnemy {
 
     private SinglePositionParticleEmitter particleEmitter;
     private static Random randomizer = new Random();
-    private Vector2f velocity;
     private float x, y;
 
 

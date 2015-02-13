@@ -67,11 +67,6 @@ public class GameScene implements IScene {
     }
 
     @Override
-    public <T extends AbstractSprite> IController<T> getController(ControllerType controllerType) {
-        return null;
-    }
-
-    @Override
     public void update(float deltaTime) {
         updateFood(deltaTime);
         updateEnemies(deltaTime);

@@ -12,7 +12,6 @@ import java.util.Random;
  */
 public class MultiPositionParticleEmitter extends AbstractParticleEmitter {
 
-    private Random randomzier = new Random();
     public MultiPositionParticleEmitter(Texture particleTexture, AbstractParticleCreator particlePlacer, AbstractParticleUpdater particleUpdater, IBlendParticles particleBlender, int maximumParticles) {
         super(particleTexture, particlePlacer, particleUpdater, particleBlender, maximumParticles);
     }
