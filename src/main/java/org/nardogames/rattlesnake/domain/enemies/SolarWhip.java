@@ -3,9 +3,9 @@ package org.nardogames.rattlesnake.domain.enemies;
 import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
+import org.nardogames.rattlesnake.domain.IAmEntity;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.player.Player;
-import org.nardogames.rattlesnake.domain.player.Snake;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -13,11 +13,11 @@ import java.util.Random;
 /**
  * Created by Terje on 07.02.2015.
  */
-public class SolarWhip implements IAmEnemy {
+public class SolarWhip implements IAmEntity {
 
     private SinglePositionParticleEmitter particleEmitter;
+    private ParticleEmitterPosition position;
     private static Random randomizer = new Random();
-    private float x, y;
 
 
     public static SolarWhip create() {
@@ -37,12 +37,11 @@ public class SolarWhip implements IAmEnemy {
     }
 
     public SolarWhip(Vector2f pos) {
-        x = pos.getX();
-        y = pos.getY();
+        position = new ParticleEmitterPosition(pos.getX(), pos.getY(), new Vector2f());
     }
 
     private void initializeParticleEmitter() {
-        ParticleEmitterPosition position = new ParticleEmitterPosition(x, y, new Vector2f());
+
         particleEmitter = new SinglePositionParticleEmitter(
                 TextureUtils.getTexture("textures/sphere.png"),
                 new SunFlareParticleCreator(position),
@@ -52,10 +51,7 @@ public class SolarWhip implements IAmEnemy {
         particleEmitter.initializeParticles(50);
         ParticleSystem.globalInstance().addEmitter(particleEmitter);
     }
-    @Override
-    public boolean isActive() {
-        return true;
-    }
+
 
     @Override
     public boolean collidesWithSnake(Player player) {
@@ -63,23 +59,23 @@ public class SolarWhip implements IAmEnemy {
     }
 
     @Override
-    public void notifyHitSnake() {
+    public void notifyCollidedWithSnake(Player player) {
 
     }
 
     @Override
-    public void update(float delta) {
-
+    public boolean isRemovedAfterCollision() {
+        return false;
     }
 
     @Override
     public float getX() {
-        return 0;
+        return position.getX();
     }
 
     @Override
     public float getY() {
-        return 0;
+        return position.getY();
     }
 
     @Override

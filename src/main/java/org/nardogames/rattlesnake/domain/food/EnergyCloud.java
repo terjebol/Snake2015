@@ -22,6 +22,16 @@ public class EnergyCloud extends ParticleEmitterPosition implements IAmFood {
     }
 
     @Override
+    public void notifyCollidedWithSnake(Player player) {
+        player.eatFood(this);
+    }
+
+    @Override
+    public boolean isRemovedAfterCollision() {
+        return true;
+    }
+
+    @Override
     public float getScore() {
         return 10f;
     }

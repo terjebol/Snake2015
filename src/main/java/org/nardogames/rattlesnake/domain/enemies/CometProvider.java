@@ -1,8 +1,8 @@
 package org.nardogames.rattlesnake.domain.enemies;
 
+import org.nardogames.rattlesnake.domain.IAmEntity;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.player.Player;
-import org.nardogames.rattlesnake.domain.player.Snake;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class CometProvider implements IProvideEnemies {
     }
 
     @Override
-    public IAmEnemy createEntity() {
+    public IAmEntity createEntity() {
         return Comet.create(createRandomizedVector());
     }
 
@@ -34,7 +34,7 @@ public class CometProvider implements IProvideEnemies {
     }
 
     @Override
-    public List<? extends IAmEnemy> getCurrentEntities() {
+    public List<? extends IAmEntity> getCurrentEntities() {
         return comets;
     }
 
@@ -43,11 +43,17 @@ public class CometProvider implements IProvideEnemies {
         if (shouldProvideMore()) {
             comets.add((Comet) createEntity());
         }
-        for (int i = comets.size() - 1; i >= 0; i--) {
-            Comet comet = comets.get(i);
+        handleCollisions(player);
+    }
 
-            if (comet.collidesWithSnake(player)) {
-                comet.notifyHitSnake();
+    private void handleCollisions(Player player) {
+        for(int i = comets.size()-1; i >= 0; i--) {
+            Comet comet = comets.get(i);
+            if(comet.collidesWithSnake(player)) {
+                comet.notifyCollidedWithSnake();
+                if(comet.isRemovedAfterCollision()) {
+                    comets.remove(i);
+                }
             }
 
             if (isOutsideBounds(comet)) {
@@ -55,10 +61,10 @@ public class CometProvider implements IProvideEnemies {
                 comet.dispose();
             }
         }
-}
+    }
 
     // TODO: This is a naive check - FIX
-    private boolean isOutsideBounds(IAmEnemy comet) {
+    private boolean isOutsideBounds(IAmEntity comet) {
         if (comet.getX() < -200f) return true;
         if (comet.getX() > RattleSnake.getInstance().getDisplayWidth() + 200) return true;
         if (comet.getY() < -200f) return true;

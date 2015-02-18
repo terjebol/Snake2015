@@ -1,12 +1,10 @@
 package org.nardogames.rattlesnake.domain.player;
 
-import com.sun.deploy.security.DeployClientAuthCertStore;
 import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.Collision;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.domain.RattleSnake;
-import org.nardogames.rattlesnake.domain.enemies.IAmEnemy;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;

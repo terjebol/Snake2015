@@ -4,14 +4,12 @@ package org.nardogames.rattlesnake.domain.enemies;
 import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
+import org.nardogames.rattlesnake.domain.IAmEntity;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.player.Player;
-import org.nardogames.rattlesnake.domain.player.Snake;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.util.Random;
-
-public class Comet implements IAmEnemy {
+public class Comet implements IAmEntity {
     private SinglePositionParticleEmitter particleEmitter;
     private ParticleEmitterPosition position;
 
@@ -22,7 +20,6 @@ public class Comet implements IAmEnemy {
         comet.position = new ParticleEmitterPosition(positionVector.getX(), positionVector.getY(), vector);
         comet.initializeParticleEmitter();
         return comet;
-
     }
 
     private void initializeParticleEmitter() {
@@ -59,13 +56,13 @@ public class Comet implements IAmEnemy {
     }
 
     @Override
-    public void notifyHitSnake() {
+    public void notifyCollidedWithSnake(Player player) {
 
     }
 
     @Override
-    public void update(float delta) {
-
+    public boolean isRemovedAfterCollision() {
+        return false;
     }
 
     @Override

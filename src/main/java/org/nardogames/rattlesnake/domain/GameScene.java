@@ -1,8 +1,6 @@
 package org.nardogames.rattlesnake.domain;
 
 import org.lwjgl.opengl.GL11;
-import org.nardogames.rattlesnake.common.content.AbstractSprite;
-import org.nardogames.rattlesnake.common.content.IController;
 import org.nardogames.rattlesnake.common.content.IScene;
 import org.nardogames.rattlesnake.common.gl.TextureCoord2f;
 import org.nardogames.rattlesnake.common.gl.VBO;
@@ -11,13 +9,11 @@ import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.common.util.Vertex2f;
 import org.nardogames.rattlesnake.common.util.VertexUtils;
 import org.nardogames.rattlesnake.domain.enemies.CometProvider;
-import org.nardogames.rattlesnake.domain.enemies.IAmEnemy;
 import org.nardogames.rattlesnake.domain.enemies.IProvideEnemies;
 import org.nardogames.rattlesnake.domain.enemies.SolarWhipProvider;
 import org.nardogames.rattlesnake.domain.food.EnergyCloudProvider;
 import org.nardogames.rattlesnake.domain.food.IProvideFood;
 import org.nardogames.rattlesnake.domain.player.Player;
-import org.nardogames.rattlesnake.domain.player.Snake;
 import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayList;
@@ -75,13 +71,19 @@ public class GameScene implements IScene {
     }
 
     private void updateFood(float deltaTime) {
-        //Snake snake = player.getSnake();
         for(IProvideFood provider : foodProviders) {
             provider.update(deltaTime, player);
-            //checkFoodCollisionsWithSnake(provider);
         }
         addAndRemoveFoodProviders();
     }
+
+    private void updateEnemies(float deltaTime) {
+        for(IProvideEnemies provider: enemyProviders) {
+            provider.update(deltaTime, player);
+        }
+        addAndRemoveEnemyProviders();
+    }
+
 
 //    private void checkFoodCollisionsWithSnake(IProvideFood provider) {
 //        List<? extends IAmFood> currentFood = provider.getCurrentEntities();
@@ -102,27 +104,6 @@ public class GameScene implements IScene {
                 provider.dispose();
             }
         }
-    }
-
-    private void updateEnemies(float deltaTime) {
-        //Snake snake = player.getSnake();
-        for(IProvideEnemies provider: enemyProviders) {
-            provider.update(deltaTime, player);
-            checkEnemyCollisionsWithSnake(provider);
-        }
-        addAndRemoveEnemyProviders();
-    }
-
-    private void checkEnemyCollisionsWithSnake(IProvideEnemies provider) {
-        List<? extends IAmEnemy> currentEnemy = provider.getCurrentEntities();
-        //Snake snake = player.getSnake();
-        for(IAmEnemy enemy : currentEnemy) {
-            if(enemy.collidesWithSnake(player)) {
-//                snake.notifyHitByEnemy(enemy);
-                enemy.notifyHitSnake();
-            }
-        }
-
     }
 
     private void addAndRemoveEnemyProviders() {

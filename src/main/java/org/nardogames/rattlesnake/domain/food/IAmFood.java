@@ -1,8 +1,7 @@
 package org.nardogames.rattlesnake.domain.food;
 
-import org.nardogames.rattlesnake.domain.player.Player;
+import org.nardogames.rattlesnake.domain.ICollideWithSnake;
 
-public interface IAmFood {
-    public boolean collidesWithSnake(Player player);
+public interface IAmFood extends ICollideWithSnake {
     public float getScore();
 }

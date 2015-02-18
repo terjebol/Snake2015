@@ -1,5 +1,6 @@
 package org.nardogames.rattlesnake.domain.enemies;
 
+import org.nardogames.rattlesnake.domain.IAmEntity;
 import org.nardogames.rattlesnake.domain.player.Player;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class SolarWhipProvider implements IProvideEnemies {
     }
 
     @Override
-    public IAmEnemy createEntity() {
+    public IAmEntity createEntity() {
         return SolarWhip.create();
     }
 
@@ -31,7 +32,7 @@ public class SolarWhipProvider implements IProvideEnemies {
     }
 
     @Override
-    public List<? extends IAmEnemy> getCurrentEntities() {
+    public List<? extends IAmEntity> getCurrentEntities() {
         return solarWhips;
     }
 

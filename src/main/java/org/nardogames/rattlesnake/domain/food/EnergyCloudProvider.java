@@ -63,9 +63,11 @@ public class EnergyCloudProvider implements IProvideFood {
         for(int i = positions.size()-1;i>=0; i--) {
             IAmFood food = positions.get(i);
             if(food.collidesWithSnake(player)) {
-                player.eatFood(food);
-                positions.remove(i);
-                positionsNeedUpdate = true;
+                food.notifyCollidedWithSnake(player);
+                if(food.isRemovedAfterCollision()) {
+                    positions.remove(i);
+                    positionsNeedUpdate = true;
+                }
             }
         }
     }
