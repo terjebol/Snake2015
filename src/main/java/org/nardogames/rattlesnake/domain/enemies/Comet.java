@@ -57,22 +57,10 @@ public class Comet implements IAmEnemy {
         if(player.isInvulnerable()) {
             return false;
         }
-
-        // minimum alpha value of particle to allow collision
-        float alphaThreshold = 0.5f;
         float x = player.getX();
         float y = player.getY();
         float snakeRadius = player.getSnakeRadius();
-        List<Particle> particles = particleEmitter.getParticleList();
-        for(Particle particle : particles) {
-            if(particle.active && particle.alpha > alphaThreshold) {
-                if(Collision.circleIntersectsCircle(x, y, snakeRadius, particle.x, particle.y, particle.width)) {
-                    System.out.println("Collision with particle "+particle);
-                    return true;
-                }
-            }
-        }
-        return false;
+        return Collision.circleIntersectsCircle(x, y, snakeRadius, position.getX(), position.getY(), 16f);
     }
 
     @Override
