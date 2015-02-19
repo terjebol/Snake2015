@@ -1,4 +1,5 @@
 package org.nardogames.rattlesnake.common.content;
 
-public class IUpdate {
+public interface IUpdate {
+    public void update(float delta);
 }

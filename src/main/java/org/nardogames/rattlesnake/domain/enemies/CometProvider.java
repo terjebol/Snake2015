@@ -1,6 +1,6 @@
 package org.nardogames.rattlesnake.domain.enemies;
 
-import org.nardogames.rattlesnake.domain.IAmEntity;
+import org.nardogames.rattlesnake.domain.IEntity;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.player.Player;
 import org.newdawn.slick.geom.Vector2f;
@@ -19,7 +19,7 @@ public class CometProvider implements IProvideEnemies {
     }
 
     @Override
-    public IAmEntity createEntity() {
+    public IEntity createEntity() {
         return Comet.create(createRandomizedVector());
     }
 
@@ -34,7 +34,7 @@ public class CometProvider implements IProvideEnemies {
     }
 
     @Override
-    public List<? extends IAmEntity> getCurrentEntities() {
+    public List<? extends IEntity> getCurrentEntities() {
         return comets;
     }
 
@@ -50,7 +50,7 @@ public class CometProvider implements IProvideEnemies {
         for(int i = comets.size()-1; i >= 0; i--) {
             Comet comet = comets.get(i);
             if(comet.collidesWithSnake(player)) {
-                comet.notifyCollidedWithSnake();
+                comet.notifyCollidedWithSnake(player);
                 if(comet.isRemovedAfterCollision()) {
                     comets.remove(i);
                 }
@@ -64,7 +64,7 @@ public class CometProvider implements IProvideEnemies {
     }
 
     // TODO: This is a naive check - FIX
-    private boolean isOutsideBounds(IAmEntity comet) {
+    private boolean isOutsideBounds(IEntity comet) {
         if (comet.getX() < -200f) return true;
         if (comet.getX() > RattleSnake.getInstance().getDisplayWidth() + 200) return true;
         if (comet.getY() < -200f) return true;

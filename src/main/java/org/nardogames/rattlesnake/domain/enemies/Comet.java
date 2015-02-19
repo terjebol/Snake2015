@@ -3,13 +3,15 @@ package org.nardogames.rattlesnake.domain.enemies;
 
 import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
+import org.nardogames.rattlesnake.common.util.Collision;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
-import org.nardogames.rattlesnake.domain.IAmEntity;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.player.Player;
 import org.newdawn.slick.geom.Vector2f;
 
-public class Comet implements IAmEntity {
+import java.util.List;
+
+public class Comet implements IAmEnemy {
     private SinglePositionParticleEmitter particleEmitter;
     private ParticleEmitterPosition position;
 
@@ -52,12 +54,30 @@ public class Comet implements IAmEntity {
 
     @Override
     public boolean collidesWithSnake(Player player) {
+        if(player.isInvulnerable()) {
+            return false;
+        }
+
+        // minimum alpha value of particle to allow collision
+        float alphaThreshold = 0.5f;
+        float x = player.getX();
+        float y = player.getY();
+        float snakeRadius = player.getSnakeRadius();
+        List<Particle> particles = particleEmitter.getParticleList();
+        for(Particle particle : particles) {
+            if(particle.active && particle.alpha > alphaThreshold) {
+                if(Collision.circleIntersectsCircle(x, y, snakeRadius, particle.x, particle.y, particle.width)) {
+                    System.out.println("Collision with particle "+particle);
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public void notifyCollidedWithSnake(Player player) {
-
+        player.hitByEnemy(this);
     }
 
     @Override
@@ -78,6 +98,11 @@ public class Comet implements IAmEntity {
     @Override
     public void dispose() {
         ParticleSystem.globalInstance().removeEmitter(particleEmitter);
+    }
+
+    @Override
+    public float getDamage() {
+        return 5f;
     }
 
     private static class CompetParticleCreator extends DefaultParticleSet.DefaultParticleCreator {

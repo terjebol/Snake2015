@@ -5,6 +5,7 @@ import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.Collision;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.domain.RattleSnake;
+import org.nardogames.rattlesnake.domain.enemies.IAmEnemy;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.List;
@@ -13,14 +14,20 @@ public class Snake {
     private ParticleEmitterPosition emitterPosition;
     SinglePositionParticleEmitter particleEmitter;
     private final static float SNAKE_DEFAULT_SPEED_SCALER = 0.15f;
-    private final static float SNAKE_DEFAULT_SIZE = 5f;
-    private final static float SNAKE_MINIMUM_SIZE = 4f;
-    private final static float SNAKE_MAXIMUM_SIZE = 20f;
+    private final static float SNAKE_DEFAULT_SIZE = 50f;
+    private final static float SNAKE_MINIMUM_SIZE = 10f;
+    private final static float SNAKE_MAXIMUM_SIZE = 150f;
     private float snakeSize;
+    private boolean isAlive;
+    private boolean isInvulnerable;
+    private float invulnerableTime;
 
     public Snake() {
         setSnakeSize(SNAKE_DEFAULT_SIZE);
         initializeParticleEmitter();
+        isAlive = true;
+        isInvulnerable = false;
+        invulnerableTime = 0f;
     }
 
     private void initializeParticleEmitter() {
@@ -30,7 +37,7 @@ public class Snake {
         emitterPosition = new ParticleEmitterPosition(emitterx,emittery, snakeVector);
         ParticleSet particleSet = new ParticleSet(
                 new SnakeParticleCreator(this),
-                new FoodSet.FoodParticleUpdater(Linear.easeIn),
+                new SnakeParticleUpdater(this),
                 DefaultParticleSet.get().getBlender());
         particleEmitter = new SinglePositionParticleEmitter(
                 TextureUtils.getTexture("textures/sphere.png"),
@@ -57,7 +64,7 @@ public class Snake {
     }
 
     protected float getSnakeRadius() {
-        return snakeSize * 4f;
+        return snakeSize * 0.5f;
     }
 
     protected boolean containsPoint(float x, float y) {
@@ -70,6 +77,9 @@ public class Snake {
     }
 
     protected void update(float deltaTime) {
+        if(isInvulnerable()) {
+            reduceInvulnerabilityTime(deltaTime);
+        }
         particleEmitter.update(deltaTime);
         List<Particle> particles = particleEmitter.getParticleList();
         for(Particle particle : particles) {
@@ -83,8 +93,32 @@ public class Snake {
         flipSnakePositionIfNecessary();
     }
 
-    private void shrinkSnake() {
-        setSnakeSize( getSnakeSize() - 0.1f);
+    protected void hitByEnemy(IAmEnemy enemy) {
+        if(isInvulnerable()) {
+            return;
+        }
+        float damage = enemy.getDamage();
+        shrinkSnake(damage);
+    }
+
+    protected void makeInvulnerable(float time) {
+        invulnerableTime = time;
+        isInvulnerable = true;
+    }
+
+    private void reduceInvulnerabilityTime(float time) {
+        invulnerableTime -= time;
+        if(invulnerableTime < 0f) {
+            isInvulnerable = false;
+            invulnerableTime = 0f;
+        }
+    }
+    protected boolean isInvulnerable() {
+        return isInvulnerable;
+    }
+
+    private void shrinkSnake(float dmg) {
+        setSnakeSize( getSnakeSize() - 0.1f);//dmg);
         if(getSnakeSize() < SNAKE_MINIMUM_SIZE) {
             setSnakeSize( SNAKE_MINIMUM_SIZE );
             snakeDies();
@@ -99,7 +133,11 @@ public class Snake {
     }
 
     private void snakeDies() {
+        isAlive = false;
+    }
 
+    protected boolean isAlive() {
+        return isAlive;
     }
 
     private void flipSnakePositionIfNecessary() {
@@ -129,6 +167,8 @@ public class Snake {
         particleEmitter.getPosition().getVelocity().add(theta).normalise().scale(SNAKE_DEFAULT_SPEED_SCALER);
     }
 
+
+
     private static class SnakeParticleCreator extends DefaultParticleSet.DefaultParticleCreator {
         private Snake snake;
 
@@ -148,22 +188,42 @@ public class Snake {
 
         @Override
         public float getInitialParticleWidth() {
-            return snake.getSnakeSize() * 8f;
+            return snake.getSnakeSize();
         }
 
         @Override
         public float getInitialParticleHeight() {
-            return snake.getSnakeSize() * 8f;
+            return snake.getSnakeSize();
         }
 
         @Override
         public int getMaximumTimeToLive() {
-            return Math.round(snake.getSnakeSize() * 500f);
+            return Math.round(snake.getSnakeSize() * 50f);
         }
 
         @Override
         public int getMinimumTimeToLive() {
-            return Math.round(snake.getSnakeSize() * 100f);
+            return Math.round(snake.getSnakeSize() * 10f);
+        }
+    }
+
+    private static class SnakeParticleUpdater extends FoodSet.FoodParticleUpdater {
+
+        private Snake snake;
+        public SnakeParticleUpdater(Snake snake) {
+            super(Linear.easeIn);
+            this.snake = snake;
+        }
+        @Override
+        public float[] getColor(float factorOfTtl) {
+            if(snake.isInvulnerable()) {
+                return new float[]{
+                        Math.min(1f, 0.5f + easingMethod.execute(factorOfTtl, 0f, 1f, 1f)),
+                        0f,
+                        0f
+                };
+            }
+            return super.getColor(factorOfTtl);
         }
     }
 }

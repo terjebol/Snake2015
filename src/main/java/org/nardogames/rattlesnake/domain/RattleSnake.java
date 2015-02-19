@@ -4,8 +4,6 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.nardogames.rattlesnake.common.content.AbstractSprite;
-import org.nardogames.rattlesnake.common.content.IController;
 import org.nardogames.rattlesnake.common.content.IScene;
 import org.nardogames.rattlesnake.common.keyboard.AbstractKeyEventListener;
 import org.nardogames.rattlesnake.common.keyboard.KeyboardController;
@@ -21,7 +19,7 @@ public class RattleSnake implements FPSListener {
     private static final Logger log = LoggerFactory.getLogger(RattleSnake.class);
     private LoopTime loopTime;
     private boolean requestedShutdown;
-    private DisplayMode displayMode = Display.getDesktopDisplayMode(); //new DisplayMode(1920, 1080); //Display.getDesktopDisplayMode();
+    private DisplayMode displayMode = new DisplayMode(1280, 720); //Display.getDesktopDisplayMode();
     private IScene currentScene;
     private KeyboardController keyboardController = new KeyboardController();
 
@@ -91,7 +89,7 @@ public class RattleSnake implements FPSListener {
         try {
             Display.setTitle("RattleSnake");
             Display.setDisplayMode(displayMode);
-            Display.setFullscreen(true);
+            Display.setFullscreen(false);
             Display.create();
         } catch (LWJGLException e) {
             throw new RuntimeException("Could not create window", e);

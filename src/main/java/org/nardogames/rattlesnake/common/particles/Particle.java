@@ -10,12 +10,12 @@ public class Particle {
     protected float vy;
     protected float initialWidth;
     protected float initialHeight;
-    protected float width;
-    protected float height;
+    public float width;
+    public float height;
     protected float red;
     protected float green;
     protected float blue;
-    protected float alpha;
+    public float alpha;
     protected float originalTtl;
     protected float currentTtl;
     public boolean active;

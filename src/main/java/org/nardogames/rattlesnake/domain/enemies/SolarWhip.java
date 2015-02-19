@@ -3,7 +3,6 @@ package org.nardogames.rattlesnake.domain.enemies;
 import org.nardogames.fastmath.easing.Linear;
 import org.nardogames.rattlesnake.common.particles.*;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
-import org.nardogames.rattlesnake.domain.IAmEntity;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.player.Player;
 import org.newdawn.slick.geom.Vector2f;
@@ -13,7 +12,7 @@ import java.util.Random;
 /**
  * Created by Terje on 07.02.2015.
  */
-public class SolarWhip implements IAmEntity {
+public class SolarWhip implements IAmEnemy {
 
     private SinglePositionParticleEmitter particleEmitter;
     private ParticleEmitterPosition position;
@@ -81,6 +80,11 @@ public class SolarWhip implements IAmEntity {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public float getDamage() {
+        return 8f;
     }
 
 
