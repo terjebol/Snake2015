@@ -26,6 +26,9 @@ public class Player {
         return snake;
     }
 
+    public void renderScore() {
+        score.render();
+    }
     public Score getScore() {
         return score;
     }

@@ -2,14 +2,15 @@ package org.nardogames.rattlesnake.domain.enemies;
 
 
 import org.nardogames.fastmath.easing.Linear;
-import org.nardogames.rattlesnake.common.particles.*;
+import org.nardogames.rattlesnake.common.particles.DefaultParticleSet;
+import org.nardogames.rattlesnake.common.particles.ParticleEmitterPosition;
+import org.nardogames.rattlesnake.common.particles.ParticleSystem;
+import org.nardogames.rattlesnake.common.particles.SinglePositionParticleEmitter;
 import org.nardogames.rattlesnake.common.util.Collision;
 import org.nardogames.rattlesnake.common.util.TextureUtils;
 import org.nardogames.rattlesnake.domain.RattleSnake;
 import org.nardogames.rattlesnake.domain.player.Player;
 import org.newdawn.slick.geom.Vector2f;
-
-import java.util.List;
 
 public class Comet implements IAmEnemy {
     private SinglePositionParticleEmitter particleEmitter;

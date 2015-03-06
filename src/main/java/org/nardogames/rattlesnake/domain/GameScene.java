@@ -57,7 +57,6 @@ public class GameScene implements IScene {
             vbo.putColor( new float[] { 1f,1f,1f,1f });
         }
         TextureCoord2f txt = new TextureCoord2f();
-        //txt = txt.top(1.2f).right(1.2f);
         vbo.putTextureCoords( txt );
         isInitialized = true;
     }
@@ -126,11 +125,13 @@ public class GameScene implements IScene {
         GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
         backgroundTexture.bind();
         vbo.render();
-
         ParticleSystem.globalInstance().render();
+        player.renderScore();
 
         GL11.glDisableClientState(GL11.GL_COLOR_ARRAY);
         GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
