@@ -133,6 +133,9 @@ public class GameScene implements IScene {
         ParticleSystem.globalInstance().render();
         player.renderScore();
 
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+
         GL11.glDisableClientState(GL11.GL_COLOR_ARRAY);
         GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
     }

@@ -52,8 +52,7 @@ public class ParticleSystem {
 
 
     public void render() {
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
+
         int oldBlendSrc = GL11.glGetInteger(GL11.GL_BLEND_SRC);
         int oldBlendDst = GL11.glGetInteger(GL11.GL_BLEND_DST);
 
@@ -62,8 +61,5 @@ public class ParticleSystem {
         }
 
         GL11.glBlendFunc(oldBlendSrc, oldBlendDst);
-
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
     }
 }
